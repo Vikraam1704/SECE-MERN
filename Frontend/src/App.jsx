@@ -13,6 +13,7 @@ import {Routes, Route} from "react-router-dom"
 import Dashboard from "./component/Dashboard"
 import Course from "./component/Course"
 import CourseDetails from "./component/CourseDetails"
+import User from "./component/User"
 const App = () => {
   // const message = "<script>alert('Hacked!!!')</script>"
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path='userdata' element={<FetchApi/>} />
           <Route path='props' element={<Parent/>} />
           <Route path='reducer' element={<Reducer/>} />
+          <Route path='user' element={<User/>}/>
           <Route path='course' element={<Course/>} >
             <Route path='course/:id' element={<CourseDetails/>} />
           </Route>
