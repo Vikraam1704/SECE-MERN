@@ -1,16 +1,36 @@
+
 import React, { useState } from 'react'
+import { z } from 'zod';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
-  const [message,setMessage] = useState("");
+  const [user,setUser] = useState({
+    email: "",
+    password :""
+  })
+
+  const navigate =useNavigate();
+
+  const userSchema = z.object({
+    email : z.string().email("Invalid Email"),
+    password : z.string().min(8,"Enter atleast 8 characters")
+  })
+
+  const handleChange = (e) =>{
+      const {name,value} = e.target;
+      setUser({...user,[name]:value});
+  }
   const handleSubmit = (e) =>{
     e.preventDefault();
-    if(email === "vikraam@gmail.com" && password === "123456"){
-        setMessage("Login Successfull");
+    const data = userSchema.safeParse(user);
+    if(data.success){
+      alert("Login Successfull✔️");
+      console.log(user);
+      navigate('/dashboard');
     }
     else{
-      setMessage("Invalid Login");
+      alert(data.error.issues[0].message);
+      console.log(data);
     }
   }
   return (
@@ -20,7 +40,8 @@ const Login = () => {
             <input type="email" 
             placeholder='Enter the Email'
             name = 'email'
-            onChange={(e)=>setEmail(e.target.value)}
+            value = {user.email}
+            onChange={(e)=>handleChange(e)}
             />
 
             <br /> <br />
@@ -28,13 +49,13 @@ const Login = () => {
             <input type="password"
             placeholder='Enter the Password' 
             name = 'password'
-            onChange={(e)=>setPassword(e.target.value)}
+            value = {user.password}
+            onChange={(e)=>handleChange(e)}
             />
 
             <br /> <br />
             <button type='submit'>Submit</button>
         </form>
-        <p>{message}</p>
     </div>
   )
 }
